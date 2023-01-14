@@ -32,7 +32,7 @@ const bot = new Telegraf(api_token);
 
 var allowed_users = ["user_id"];
 
-var django_url = "http://65.108.1.206:8008/django-resize/";
+var django_url = "http://'server ip':8008/django-resize/";
 
 bot.use(async (ctx) => {
     for (let i of allowed_users) {
