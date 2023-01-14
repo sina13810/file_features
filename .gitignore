@@ -1,0 +1,11 @@
+node_modules
+package-lock.json
+test.js
+test2.js
+file_features.zip
+IMG_9116.MP4
+output.mp4
+resized_vid.mp4
+video.mp4
+venv
+static

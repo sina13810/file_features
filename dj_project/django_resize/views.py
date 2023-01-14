@@ -1,0 +1,75 @@
+from django.shortcuts import render, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
+
+from django.http import JsonResponse
+import os
+import ffmpeg
+import json
+# from rest_framework import serializers
+# from rest_framework.views import APIView
+# from .serializers import NodeSerializer
+
+
+# def compress_video(video_full_path, output_file_name, target_size):
+
+
+# Compress input.mp4 to 50MB and save as output.mp4
+
+def compress_video(video_full_path, output_file_name, target_size):
+    # Reference: https://en.wikipedia.org/wiki/Bit_rate#Encoding_bit_rate
+    min_audio_bitrate = 32000
+    max_audio_bitrate = 256000
+
+    probe = ffmpeg.probe(video_full_path)
+    # Video duration, in s.
+    duration = float(probe['format']['duration'])
+    # Audio bitrate, in bps.
+    audio_bitrate = float(next(
+        (s for s in probe['streams'] if s['codec_type'] == 'audio'), None)['bit_rate'])
+    # Target total bitrate, in bps.
+    target_total_bitrate = (target_size * 1024 * 8) / (1.073741824 * duration)
+
+    # Target audio bitrate, in bps
+    if 10 * audio_bitrate > target_total_bitrate:
+        audio_bitrate = target_total_bitrate / 10
+        if audio_bitrate < min_audio_bitrate < target_total_bitrate:
+            audio_bitrate = min_audio_bitrate
+        elif audio_bitrate > max_audio_bitrate:
+            audio_bitrate = max_audio_bitrate
+    # Target video bitrate, in bps.
+    video_bitrate = target_total_bitrate - audio_bitrate
+
+    i = ffmpeg.input(video_full_path)
+    ffmpeg.output(i, os.devnull,
+                  **{'c:v': 'libx264', 'b:v': video_bitrate, 'pass': 1, 'f': 'mp4'}).overwrite_output().run()
+    ffmpeg.output(i, output_file_name,
+                  **{'c:v': 'libx264', 'b:v': video_bitrate, 'pass': 2, 'c:a': 'aac', 'b:a': audio_bitrate}).overwrite_output().run()
+
+
+# Compress input.mp4 to 50MB and save as output.mp4
+
+# @csrf_protect
+@csrf_exempt
+def resizing_video(request):
+    if request.method == 'POST':
+        json_object = json.loads(request.body)
+        data = json_object["data"]
+
+        if data == "success":
+
+            # print(request.method)  # POST
+            print(request.body, "\n")
+            print(json_object["suffix"])
+
+            suffix = json_object["suffix"]
+            desired_size = json_object['desired_size']
+
+            video_full_path = f"../Videos/video.{suffix}"
+            output_file_name = f"../Videos/output.{suffix}"
+            target_size = desired_size
+
+            compress_video(video_full_path, output_file_name,
+                           target_size * 1000)
+
+        return JsonResponse({"message": "success"})
