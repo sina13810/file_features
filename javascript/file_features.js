@@ -7,7 +7,7 @@ import { exec } from "child_process";
 
 var __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const api_token = "5728537487:AAHqOPtSF6f_1xlrjgIxDcfxIrA2YGvLxrs";
+const api_token = "bot token";
 
 // MongoDB :
 // Connection URL
@@ -30,9 +30,9 @@ const api_token = "5728537487:AAHqOPtSF6f_1xlrjgIxDcfxIrA2YGvLxrs";
 
 const bot = new Telegraf(api_token);
 
-var allowed_users = [5395286252];
+var allowed_users = ["user_id"];
 
-var django_url = "http://65.108.1.206:8008/django-resize/";
+var django_url = "http://server ip:8008/django-resize/";
 
 bot.use(async (ctx) => {
     for (let i of allowed_users) {
