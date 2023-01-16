@@ -61,12 +61,12 @@ def resizing_video(request):
             # print(request.method)  # POST
             print(request.body, "\n")
             print(json_object["suffix"])
-
+            vid_name = json_object["video_name"]
             suffix = json_object["suffix"]
             desired_size = json_object['desired_size']
 
             video_full_path = f"../Videos/video.{suffix}"
-            output_file_name = f"../Videos/output.{suffix}"
+            output_file_name = f"../Videos/{vid_name}.{suffix}"
             target_size = desired_size
 
             compress_video(video_full_path, output_file_name,

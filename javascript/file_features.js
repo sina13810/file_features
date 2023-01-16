@@ -7,7 +7,7 @@ import { exec } from "child_process";
 
 var __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const api_token = "bot_token"; // telegram bot by botfather
+const api_token = "5728537487:AAHqOPtSF6f_1xlrjgIxDcfxIrA2YGvLxrs";
 
 // MongoDB :
 // Connection URL
@@ -30,9 +30,9 @@ const api_token = "bot_token"; // telegram bot by botfather
 
 const bot = new Telegraf(api_token);
 
-var allowed_users = ["user_id"];
+var allowed_users = [5395286252];
 
-var django_url = "http://'server ip':8008/django-resize/";
+var django_url = "http://65.108.1.206:8008/django-resize/";
 
 bot.use(async (ctx) => {
     for (let i of allowed_users) {
@@ -41,6 +41,7 @@ bot.use(async (ctx) => {
                 let file_id = ctx.message.video.file_id;
                 let vid_link = await ctx.telegram.getFileLink(file_id);
                 let writable;
+                var video_number = Math.floor(Math.random() * 1000) + 100;
                 try {
                     (async () => {
                         if (ctx.message.video.mime_type == "video/mp4") {
@@ -76,6 +77,7 @@ bot.use(async (ctx) => {
                                         data: "success",
                                         suffix: "mp4",
                                         desired_size: 7,
+                                        video_name: video_number,
                                     },
                                     json: true,
                                 };
@@ -98,8 +100,8 @@ bot.use(async (ctx) => {
 
                                 if (dj_res.data.message == "success") {
                                     ctx.replyWithVideo({
-                                        url: "https://resize.test-tlg.ir/Videos/output.mp4",
-                                        filename: "resized_vid.mp4",
+                                        url: `https://resize.test-tlg.ir/Videos/${video_number}.mp4`,
+                                        filename: "resized_vid" + video_number + ".mp4",
                                     });
                                 }
                             } else {
@@ -133,6 +135,7 @@ bot.use(async (ctx) => {
                                         data: "success",
                                         suffix: "mp4",
                                         desired_size: 10,
+                                        video_name: video_number,
                                     },
                                     json: true,
                                 };
@@ -145,8 +148,8 @@ bot.use(async (ctx) => {
 
                                 if (dj_res.data.message == "success") {
                                     ctx.replyWithVideo({
-                                        url: "https://resize.test-tlg.ir/Videos/output.mp4",
-                                        filename: "resized_vid.mp4",
+                                        url: `https://resize.test-tlg.ir/Videos/${video_number}.mp4`,
+                                        filename: "resized_vid" + video_number + ".mp4",
                                     });
                                 }
 
@@ -199,6 +202,7 @@ bot.use(async (ctx) => {
                                     data: "success",
                                     suffix: "mpeg",
                                     desired_size: 10,
+                                    video_name: video_number,
                                 });
 
                                 // ctx.replyWithVideo({
@@ -213,8 +217,8 @@ bot.use(async (ctx) => {
                                 // });
                                 if (dj_res.data.message == "success") {
                                     ctx.replyWithVideo({
-                                        url: "https://resize.test-tlg.ir/Videos/output.mpeg",
-                                        filename: "resized_vid.mpeg",
+                                        url: `https://resize.test-tlg.ir/Videos/${video_number}.mpeg`,
+                                        filename: "resized_vid" + video_number + ".mpeg",
                                     });
                                 }
                             } else {
@@ -241,6 +245,7 @@ bot.use(async (ctx) => {
                                     data: "success",
                                     suffix: "mpeg",
                                     desired_size: 7,
+                                    video_name: video_number,
                                 });
 
                                 // ctx.replyWithVideo({
@@ -249,8 +254,8 @@ bot.use(async (ctx) => {
                                 // });
                                 if (dj_res.data.message == "success") {
                                     ctx.replyWithVideo({
-                                        url: "https://resize.test-tlg.ir/Videos/output.mpeg",
-                                        filename: "resized_vid.mpeg",
+                                        url: `https://resize.test-tlg.ir/Videos/${video_number}.mpeg`,
+                                        filename: "resized_vid" + video_number + ".mpeg",
                                     });
                                 }
                             }
@@ -279,12 +284,13 @@ bot.use(async (ctx) => {
                                     data: "success",
                                     suffix: "avi",
                                     desired_size: 10,
+                                    video_name: video_number,
                                 });
 
                                 if (dj_res.data.message == "success") {
                                     ctx.replyWithVideo({
-                                        url: "https://resize.test-tlg.ir/Videos/output.avi",
-                                        filename: "resized_vid.mp4",
+                                        url: `https://resize.test-tlg.ir/Videos/${video_number}.avi`,
+                                        filename: "resized_vid" + video_number + ".mp4",
                                     });
                                 }
                                 // ctx.replyWithVideo({
@@ -323,11 +329,12 @@ bot.use(async (ctx) => {
                                     data: "success",
                                     suffix: "avi",
                                     desired_size: 7,
+                                    video_name: video_number,
                                 });
                                 if (dj_res.data.message == "success") {
                                     ctx.replyWithVideo({
-                                        url: "https://resize.test-tlg.ir/Videos/output.avi",
-                                        filename: "resized_vid.avi",
+                                        url: `https://resize.test-tlg.ir/Videos/${video_number}.avi`,
+                                        filename: "resized_vid" + video_number + ".avi",
                                     });
                                 }
 
